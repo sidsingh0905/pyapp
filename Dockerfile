@@ -4,6 +4,12 @@ FROM python:3.11.5-alpine
 # Set the working directory in the container
 WORKDIR /app
 
+# Install system dependencies required for pyodbc and others
+RUN apk update && apk add --no-cache \
+    build-base \
+    unixodbc-dev \
+    && rm -rf /var/cache/apk/*
+
 # Copy the requirements.txt file into the container
 COPY requirement.txt /app/
 
