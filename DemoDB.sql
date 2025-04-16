@@ -1,12 +1,7 @@
-USE master;
-GO
-IF DB_ID ('DemoDB') IS NOT NULL
-DROP DATABASE DemoDB;
-GO
-CREATE DATABASE DemoDB;
+CREATE DATABASE dbpyapp;
 GO
 
-USE DemoDB;
+USE dbpyapp;
 GO
 
 CREATE TABLE categories (

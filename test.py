@@ -3,8 +3,8 @@ import pyodbc
 # Database connection parameters
 SERVER = r'DESKTOP-0JQ7NM2\SQLEXPRESS'
 DATABASE = 'dbpyapp'
-USERNAME = ''  # No username needed for Windows Authentication
-PASSWORD = ''  # No password needed for Windows Authentication
+USERNAME = 'PYAPP_USER'  # No username needed for Windows Authentication
+PASSWORD = 'Siddhant@9'  # No password needed for Windows Authentication
 DRIVER = '{ODBC Driver 17 for SQL Server}'
 TIMEOUT = 1
 TRUSTED_CONNECTION = 'YES'
