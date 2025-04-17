@@ -18,11 +18,18 @@ if platform().startswith('mac'):
         UID={USERNAME};\
         PWD={PASSWORD};'
 else:
+    # connection_string = f'\
+    #     DRIVER={DRIVER};\
+    #     SERVER={SERVER};\
+    #     DATABASE={DATABASE};\
+    #     TRUSTED_CONNECTION={TRUSTED_CONNECTION}'
+     # For SQL Server Authentication (do not include TRUSTED_CONNECTION)
     connection_string = f'\
         DRIVER={DRIVER};\
         SERVER={SERVER};\
         DATABASE={DATABASE};\
-        TRUSTED_CONNECTION={TRUSTED_CONNECTION}'
+        UID={USERNAME};\
+        PWD={PASSWORD}'
 
 def execute_query(query, params=None, method='GET'):
     ''' Define a helper function to execute SQL queries '''
@@ -93,3 +100,4 @@ def customers():
 # Run the app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+

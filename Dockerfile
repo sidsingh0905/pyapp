@@ -59,6 +59,7 @@
 
 
 # Use a Python base image
+
 FROM python:3.11.5-slim
 
 # Set the working directory in the container
@@ -92,3 +93,5 @@ ENV FLASK_APP=app.py
 
 # Run the Flask application when the container starts
 CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+
+

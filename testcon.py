@@ -1,27 +1,19 @@
 import os
 import pyodbc
-from flask import Flask
 
-app = Flask(__name__)
 
-# Retrieve the database connection details from environment variables
-server = os.getenv('DB_HOST', 'sql_server')  # Default is 'sql_server' (the service name in docker-compose.yml)
-port = os.getenv('DB_PORT', '1433')          # Default SQL Server port
-database = os.getenv('DB_NAME', 'dbpyapp')   # The database name
-username = os.getenv('DB_USER', 'sa')        # Default SQL Server user
-password = os.getenv('DB_PASSWORD', 'YourStrong!Passw0rd')  # Default password
+# Read environment variables from .env
+SERVER = os.getenv('DB_SERVER', 'sql_server')  # Use sql_server as the container name
+DATABASE = os.getenv('DB_NAME', 'dbpyapp')  # Database name
+USERNAME = os.getenv('DB_USERNAME', 'sa')  # Default SQL Server admin username
+PASSWORD = os.getenv('DB_PASSWORD', 'Siddhant@9')  # Password for the 'sa' user
+DRIVER = os.getenv('DB_DRIVER', '{ODBC Driver 17 for SQL Server}')
+TIMEOUT = 5  # Timeout to avoid hanging queries
+TRUSTED_CONNECTION = os.getenv('DB_TRUSTED_CONNECTION', 'NO')
 
-# Connection string for SQL Server
-conn_str = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server},{port};DATABASE={database};UID={username};PWD={password}'
-
-@app.route('/')
-def test_connection():
-    try:
-        # Trying to connect to the SQL Server
-        conn = pyodbc.connect(conn_str)
-        return "Connection successful!"
-    except Exception as e:
-        return f"Error: {e}"
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+# Example of a connection string
+conn = pyodbc.connect(f'DRIVER={{{DRIVER}}};'
+                      f'SERVER={SERVER},1433;'  # 1433 is the default port for SQL Server
+                      f'DATABASE={DATABASE};'
+                      f'UID={USERNAME};'  # Use the sa username
+                      f'PWD={PASSWORD}')  # Use the sa password
