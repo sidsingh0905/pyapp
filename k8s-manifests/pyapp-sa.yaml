@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: pyapp_sa
+  name: pyapp-sa
   namespace: default
   labels:
     app: flask-pyapp

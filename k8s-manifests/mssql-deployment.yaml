@@ -8,7 +8,7 @@ spec:
       labels:
         app: mssql
     spec:
-      serviceAccountName: pyapp_sa  # 👈 Add this line
+      serviceAccountName: pyapp-sa  # 👈 Add this line
       containers:
         - name: mssql
           image: mcr.microsoft.com/mssql/server:2019-latest

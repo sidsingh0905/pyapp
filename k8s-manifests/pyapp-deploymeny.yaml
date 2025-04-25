@@ -14,7 +14,7 @@ spec:
       labels:
         app: flask-pyapp
     spec:
-      serviceAccountName: pyapp_sa
+      serviceAccountName: pyapp-sa
       containers:
       - name: 
         image: sidsingh0905/myproject_web:latest
