@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  labels:
+    app: flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+        - name: flask-app
+          image: sidsingh0905/myproject_web:latest   # Replace with your real Dockerhub image
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_SERVER
+              value: "mssql-service"
+            - name: DB_NAME
+              value: "dbpyapp"
+            - name: DB_USERNAME
+              value: "sa"
+            - name: DB_PASSWORD
+              value: "Siddhant@9"
+            - name: DB_DRIVER
+              value: "{ODBC Driver 17 for SQL Server}"
+            - name: DB_TRUSTED_CONNECTION
+              value: "NO"

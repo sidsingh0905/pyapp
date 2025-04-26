@@ -1,3 +1,9 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-deployment
+  labels:
+    app: mssql
 spec:
   replicas: 1
   selector:
@@ -8,7 +14,6 @@ spec:
       labels:
         app: mssql
     spec:
-      serviceAccountName: pyapp-sa  # 👈 Add this line
       containers:
         - name: mssql
           image: mcr.microsoft.com/mssql/server:2019-latest
@@ -18,6 +23,6 @@ spec:
             - name: ACCEPT_EULA
               value: "Y"
             - name: SA_PASSWORD
-              value: Siddhant@9
+              value: "Siddhant@9"
             - name: MSSQL_PID
-              value: Express
+              value: "Express"
