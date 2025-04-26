@@ -1,0 +1,92 @@
+# old yml while were using configmap for tiny sql database
+
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: db-init-job
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: db-init
+#         image: mcr.microsoft.com/mssql-tools
+#         command: ["/bin/bash", "-c"]
+#         args:
+#           - |
+#             echo "Waiting for MSSQL to be ready...";
+#             sleep 30;  # wait for MSSQL startup (adjust if needed)
+#             /opt/mssql-tools/bin/sqlcmd -S mssql-service -U sa -P 'Siddhant@9' -i /initdb/init.sql;
+#         volumeMounts:
+#         - name: initdb-volume
+#           mountPath: /initdb
+#       restartPolicy: OnFailure
+#       volumes:
+#       - name: initdb-volume
+#         configMap:
+#           name: initdb-config
+
+
+
+# Its also not working now moving to configMap
+
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: db-init-job
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: db-init
+#         image: mcr.microsoft.com/mssql-tools
+#         command: ["/bin/bash", "-c"]
+#         args:
+#           - |
+#             echo "Waiting for MSSQL to be ready...";
+#             sleep 30;
+#             /opt/mssql-tools/bin/sqlcmd -S mssql-service -U sa -P 'Siddhant@9' -i /initdb/init.sql;
+#         volumeMounts:
+#         - name: initdb-volume
+#           mountPath: /initdb
+#       restartPolicy: OnFailure
+#       volumes:
+#       - name: initdb-volume
+#         hostPath:
+#           path: /home/ubuntu/pyapp/k8s-manifests/initdb  # <-- Path where your init.sql is on EC2
+#           type: Directory
+
+
+
+# ConfigMap yaml file for the init.sql file 
+
+# kubectl create configmap initdb-config --from-file=init.sql=/home/ubuntu/pyapp/k8s-manifests/initdb/init.sql
+# then run this yaml
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-init-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-init
+        image: mcr.microsoft.com/mssql-tools
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            echo "Waiting for MSSQL to be ready...";
+            until /opt/mssql-tools/bin/sqlcmd -S mssql-service -U sa -P 'Siddhant@9' -Q "SELECT 1" > /dev/null; do
+              echo "Waiting for MSSQL to be ready...";
+              sleep 10;
+            done;
+            echo "MSSQL is ready, now running SQL script...";
+            /opt/mssql-tools/bin/sqlcmd -S mssql-service -U sa -P 'Siddhant@9' -i /initdb/init.sql;
+        volumeMounts:
+        - name: initdb-volume
+          mountPath: /initdb
+      restartPolicy: OnFailure
+      volumes:
+      - name: initdb-volume
+        configMap:
+          name: initdb-config
